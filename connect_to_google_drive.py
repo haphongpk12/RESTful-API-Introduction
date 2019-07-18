@@ -28,13 +28,10 @@ def get_auth_google_drive_api():
     return drive
 
 
-def retrieve_all_files(api_service):
-    """
-    This function use to retrieve all files on google drive user
-    """
+def retrieve_all_files(api_service, filename_to_search):
     results = []
     page_token = None
-
+    check = 0
     while True:
         try:
             param = {}
@@ -56,11 +53,17 @@ def retrieve_all_files(api_service):
             break
     # output the file metadata to console
     for file in results:
-        print(file)
+        if file.get('name') == filename_to_search:
+            print(file)
+            break
+        else:
+            check = 1
+    if check == 1:
+        print("Error")
 
-    return results
+    return results, file
 
 
 if __name__ == "__main__":
     drive = get_auth_google_drive_api()
-    all_files = retrieve_all_files(drive)
+    all_files = retrieve_all_files(drive, "asd")
